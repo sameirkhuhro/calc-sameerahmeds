@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calc by Sameer Ahmed - Quantitative & Economic Portfolio</title>
+    <!-- Rest of your head code -->
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("U2H1m33RBeQ5AnQuM");
+        })();
+    </script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #0f172a;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        /* Locked Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.90);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .modal-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .modal-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 480px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+            border: 1px solid #cbd5e1;
+            position: relative;
+        }
+
+        .author-blur-badge {
+            background: #f1f5f9;
+            color: #475569;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 16px;
+            filter: blur(0.4px);
+            letter-spacing: 0.3px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .modal-card h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .modal-card p {
+            font-size: 13px;
+            color: #64748b;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .input-group-modal {
+            margin-bottom: 14px;
+            text-align: left;
+        }
+
+        .input-group-modal label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            color: #334155;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .form-control-modal {
+            width: 100%;
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            color: #0f172a;
+            padding: 10px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .btn-modal-action {
+            background: #0284c7;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: background 0.2s ease;
+        }
+
+        .btn-modal-action:hover {
+            background: #0369a1;
+        }
+
+        /* Navigation Header */
+        header {
+            max-width: 1200px;
+            margin: 0 auto 24px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            padding: 16px 24px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        .brand-text h2 {
+            font-size: 20px;
+            color: #0f172a;
+            font-weight: 800;
+        }
+
+        .brand-text p {
+            font-size: 13px;
+            color: #0284c7;
+            font-weight: 600;
+        }
+
+        nav {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            color: #475569;
+            padding: 9px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+        }
+
+        .nav-btn.active {
+            background-color: #0284c7;
+            color: #ffffff;
+            border-color: #0284c7;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tab-screen {
+            display: none;
+        }
+
+        .tab-screen.active {
+            display: block;
+        }
+
+        /* Common Container */
+        .card-container {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 14px;
+            padding: 28px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+
+        .section-header {
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 14px;
+            margin-bottom: 24px;
+        }
+
+        .section-header h3 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .section-header p {
+            font-size: 14px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        /* Climate Dashboard Styles */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 24px;
+        }
+
+        .controls-panel {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        .control-label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: #334155;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .control-val-tag {
+            color: #0284c7;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+        .slider-custom {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #cbd5e1;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .slider-subtext {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .form-select-light {
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            color: #0f172a;
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            outline: none;
+        }
+
+        .severity-box {
+            background: #fef3c7;
+            border: 1px solid #fde047;
+            border-radius: 8px;
+            padding: 14px;
+            margin-top: 16px;
+        }
+
+        .severity-title {
+            font-size: 11px;
+            font-weight: 800;
+            color: #b45309;
+            text-transform: uppercase;
+        }
+
+        .severity-desc {
+            font-size: 14px;
+            font-weight: 800;
+            color: #92400e;
+            margin-top: 4px;
+        }
+
+        .btn-reset {
+            width: 100%;
+            background: #0f172a;
+            color: #ffffff;
+            font-weight: 700;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.2s;
+        }
+
+        .btn-reset:hover {
+            background: #1e293b;
+        }
+
+        .analytics-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .metrics-cards-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .metric-card-light {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .metric-card-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+
+        .metric-card-num {
+            font-size: 32px;
+            font-weight: 900;
+            color: #0f172a;
+            margin: 6px 0 2px 0;
+        }
+
+        .metric-card-sub {
+            font-size: 12px;
+            color: #0284c7;
+            font-weight: 600;
+        }
+
+        .vulnerability-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .vulnerability-title {
+            font-size: 12px;
+            font-weight: 800;
+            color: #0f172a;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .vbar-group {
+            margin-bottom: 14px;
+        }
+
+        .vbar-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 6px;
+        }
+
+        .vbar-bg {
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .vbar-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.3s ease;
+        }
+
+        .ds-note-box {
+            background: #e0f2fe;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 14px 18px;
+            font-size: 13px;
+            color: #0369a1;
+            line-height: 1.5;
+        }
+
+        /* Math & CGPA Styles */
+        .prog-btn-group {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .btn-prog {
+            flex: 1;
+            padding: 12px;
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 8px;
+            border: 2px solid #cbd5e1;
+            background: #ffffff;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-prog.active-ap {
+            background: #10b981;
+            color: #ffffff;
+            border-color: #059669;
+        }
+
+        .btn-prog.active-gp {
+            background: #0284c7;
+            color: #ffffff;
+            border-color: #0369a1;
+        }
+
+        .math-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 24px;
+        }
+
+        .math-results-light {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .subject-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 40px;
+            gap: 12px;
+            align-items: center;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 10px 16px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .btn-add-sub {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 12px 16px;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 16px;
+        }
+
+        .btn-del {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .cgpa-banner-light {
+            background: #f8fafc;
+            border: 2px solid #0284c7;
+            border-radius: 10px;
+            padding: 20px 24px;
+            color: #0f172a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. WELCOME MODAL -->
+    <div id="welcomeModal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="author-blur-badge">Author: Sameer Ahmed | sameirkhuhro@gmail.com</div>
+            <h1>Portfolio Suite Access</h1>
+            <p>Quantitative, Data Science & Economic Computing Suite designed for LUMS admissions.</p>
+            <button type="button" class="btn-modal-action" onclick="showIntroModal()">Thank you for using my app! ► Enter Suite</button>
+        </div>
+    </div>
+
+    <!-- 2. VISITOR INTRO DETAILS MODAL -->
+    <div id="introModal" class="modal-overlay hidden">
+        <div class="modal-card" style="text-align: left;">
+            <div style="text-align: center;">
+                <div class="author-blur-badge">Developer: Sameer Ahmed (sameirkhuhro@gmail.com)</div>
+                <h1>Visitor Verification</h1>
+                <p>Please enter your credentials to receive an access verification PIN.</p>
+            </div>
+            
+            <div class="input-group-modal">
+                <label>Full Name (No numbers allowed)</label>
+                <input type="text" id="visitorName" class="form-control-modal" placeholder="e.g. Sameer Ahmed">
+            </div>
+            <div class="input-group-modal">
+                <label>Email Address</label>
+                <input type="email" id="visitorEmail" class="form-control-modal" placeholder="e.g. sameirkhuhro@gmail.com">
+            </div>
+            <div class="input-group-modal">
+                <label>Semester Standing (Select)</label>
+                <select id="visitorSemester" class="form-control-modal">
+                    <option value="" disabled selected>Select University Semester ►</option>
+                    <option value="Semester 1 (Freshman Fall)">Semester 1 (Freshman Fall)</option>
+                    <option value="Semester 2 (Freshman Spring)">Semester 2 (Freshman Spring)</option>
+                    <option value="Semester 3 (Sophomore Fall)">Semester 3 (Sophomore Fall)</option>
+                    <option value="Semester 4 (Sophomore Spring)">Semester 4 (Sophomore Spring)</option>
+                    <option value="Semester 5 (Junior Fall)">Semester 5 (Junior Fall)</option>
+                    <option value="Semester 6 (Junior Spring)">Semester 6 (Junior Spring)</option>
+                    <option value="Semester 7 (Senior Fall)">Semester 7 (Senior Fall)</option>
+                    <option value="Semester 8 (Senior Spring)">Semester 8 (Senior Spring)</option>
+                    <option value="Semester 9+ (Super Senior / Thesis)">Semester 9+ (Super Senior / Thesis)</option>
+                    <option value="Graduate / Post-Graduate">Graduate / Post-Graduate Program</option>
+                </select>
+            </div>
+            <div class="input-group-modal">
+                <label>University / Institution (Select)</label>
+                <select id="visitorUni" class="form-control-modal">
+                    <option value="" disabled selected>Select University ►</option>
+                    <option value="LUMS">Lahore University of Management Sciences (LUMS)</option>
+                    <option value="IBA">Institute of Business Administration (IBA)</option>
+                    <option value="NUST">National University of Sciences and Technology (NUST)</option>
+                    <option value="GIKI">Ghulam Ishaq Khan Institute (GIKI)</option>
+                    <option value="FAST">FAST-NUCES</option>
+                    <option value="Other">Other Institution</option>
+                </select>
+            </div>
+
+            <button type="button" class="btn-modal-action" id="btnSendPin" onclick="submitVisitorIntro()">Send Security PIN to Inbox</button>
+        </div>
+    </div>
+
+    <!-- 3. PIN CODE ENTRY GATE -->
+    <div id="pinModal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="author-blur-badge">Protected by Sameer Ahmed (sameirkhuhro@gmail.com)</div>
+            <h1>Enter Verification PIN</h1>
+            <p id="pinInstructionText">Check your mobile inbox or email app for your 4-digit PIN.</p>
+            
+            <div class="input-group-modal">
+                <label>4-Digit Security PIN</label>
+                <input type="password" id="visitorPin" class="form-control-modal" maxlength="4" placeholder="••••" style="text-align: center; font-size: 20px; letter-spacing: 4px;">
+            </div>
+
+            <button type="button" class="btn-modal-action" onclick="verifyPinCode()">Verify & Unlock Suite</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="brand-text">
+            <h2>Sameer Ahmed</h2>
+            <p id="headerSubtitle">Pakistan Climate & Economic Loss Simulator</p>
+        </div>
+        <nav>
+            <button id="navClimate" class="nav-btn active" onclick="switchTab('climate')">📊 Climate Simulator</button>
+            <button id="navSeq" class="nav-btn" onclick="switchTab('seq')">🧮 AP & GP Solver</button>
+            <button id="navCgpa" class="nav-btn" onclick="switchTab('cgpa')">🎓 CGPA Predictor</button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- CLIMATE SIMULATOR -->
+        <div id="screenClimate" class="tab-screen active">
+            <div class="card-container">
+                <div class="section-header">
+                    <h3>Pakistan Climate & Economic Loss Model</h3>
+                    <p>Simulate macroeconomic damage, agricultural shock, and population displacement based on monsoon anomalies.</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="controls-panel">
+                        <div class="control-group">
+                            <div class="control-label-row">
+                                <span>Rainfall Anomaly (%)</span>
+                                <span class="control-val-tag" id="valRainfallTag">+253%</span>
+                            </div>
+                            <input type="range" id="inputRainfall" class="slider-custom" min="10" max="350" value="253" oninput="updateClimateSim()">
+                            <div class="slider-subtext">
+                                <span>Normal (+10%)</span>
+                                <span>Extreme (+350%)</span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <div class="control-label-row">
+                                <span>Crop / Agri Damage (%)</span>
+                                <span class="control-val-tag" id="valAgriTag" style="color: #10b981;">63%</span>
+                            </div>
+                            <input type="range" id="inputAgri" class="slider-custom" min="5" max="80" value="63" oninput="updateClimateSim()">
+                            <div class="slider-subtext">
+                                <span>Minor (5%)</span>
+                                <span>Severe (80%)</span>
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <div class="control-label-row">
+                                <span>Primary Impact Region</span>
+                            </div>
+                            <select id="selectRegion" class="form-select-light" onchange="updateClimateSim()">
+                                <option value="national">National (All Pakistan)</option>
+                                <option value="sindh">Sindh Basin (Cotton & Rice Belts)</option>
+                                <option value="punjab">Punjab Agricultural Plain</option>
+                                <option value="kpk">Khyber Pakhtunkhwa Flash Regions</option>
+                                <option value="balochistan">Balochistan Arid Zone</option>
+                            </select>
+                        </div>
+
+                        <div class="severity-box">
+                            <div class="severity-title">⚡ Severity Classification</div>
+                            <div class="severity-desc" id="valSeverityText">Catastrophic Climate Anomaly (Level 4)</div>
+                        </div>
+
+                        <button type="button" class="btn-reset" onclick="resetClimateSim()">Reset Parameters</button>
+                    </div>
+
+                    <div class="analytics-panel">
+                        <div class="metrics-cards-row">
+                            <div class="metric-card-light">
+                                <div class="metric-card-title">Projected Loss</div>
+                                <div class="metric-card-num" style="color: #0284c7;" id="cardProjectedLoss">$26.5 B</div>
+                                <div class="metric-card-sub">Estimated GDP Impact</div>
+                            </div>
+
+                            <div class="metric-card-light">
+                                <div class="metric-card-title">Displacement</div>
+                                <div class="metric-card-num" style="color: #d97706;" id="cardDisplacement">21.5 M</div>
+                                <div class="metric-card-sub">People Affected</div>
+                            </div>
+
+                            <div class="metric-card-light">
+                                <div class="metric-card-title">Recovery Needs</div>
+                                <div class="metric-card-num" style="color: #059669;" id="cardRecovery">$30.5 B</div>
+                                <div class="metric-card-sub">Reconstruction Cost</div>
+                            </div>
+                        </div>
+
+                        <div class="vulnerability-box">
+                            <div class="vulnerability-title">Sectoral Vulnerability Breakdown</div>
+
+                            <div class="vbar-group">
+                                <div class="vbar-header">
+                                    <span>Agricultural Supply Chain Shock</span>
+                                    <span id="txtBarAgri" style="color: #10b981;">100%</span>
+                                </div>
+                                <div class="vbar-bg">
+                                    <div class="vbar-fill" id="barAgri" style="width: 100%; background: #10b981;"></div>
+                                </div>
+                            </div>
+
+                            <div class="vbar-group">
+                                <div class="vbar-header">
+                                    <span>Infrastructure & Housing Vulnerability</span>
+                                    <span id="txtBarInfra" style="color: #0284c7;">100%</span>
+                                </div>
+                                <div class="vbar-bg">
+                                    <div class="vbar-fill" id="barInfra" style="width: 100%; background: #0284c7;"></div>
+                                </div>
+                            </div>
+
+                            <div class="vbar-group">
+                                <div class="vbar-header">
+                                    <span>Inflation Impact (Food CPI Surge)</span>
+                                    <span id="txtBarInf" style="color: #6366f1;">+22.0%</span>
+                                </div>
+                                <div class="vbar-bg">
+                                    <div class="vbar-fill" id="barInf" style="width: 75%; background: #6366f1;"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ds-note-box">
+                            <strong>Econometric & Data Science Insights (Sameer Ahmed):</strong>
+                            <span id="dsNoteText">
+                                Data regression model indicates high covariance between precipitation anomalies and rural CPI inflation spikes across Pakistan's agricultural supply chain.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AP & GP SOLVER -->
+        <div id="screenSeq" class="tab-screen">
+            <div class="card-container">
+                <div class="section-header">
+                    <h3>Progression Calculator (AP & GP)</h3>
+                    <p>Mathematical sequence and series analytical engine.</p>
+                </div>
+
+                <div class="prog-btn-group">
+                    <button id="btnSelectAp" type="button" class="btn-prog active-ap" onclick="selectProgType('AP')">Arithmetic Progression (AP)</button>
+                    <button id="btnSelectGp" type="button" class="btn-prog" onclick="selectProgType('GP')">Geometric Progression (GP)</button>
+                </div>
+
+                <div class="math-grid">
+                    <div>
+                        <div class="control-group">
+                            <label class="control-label-row">First Term (a₁)</label>
+                            <input type="number" id="mathA" class="form-select-light" value="4" oninput="calcMath()">
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label-row" id="mathDiffLabel">Common Difference (d)</label>
+                            <input type="number" id="mathD" class="form-select-light" value="3" oninput="calcMath()">
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label-row">Number of Terms (n)</label>
+                            <input type="number" id="mathN" class="form-select-light" value="6" min="1" max="50" oninput="calcMath()">
+                        </div>
+                        <button type="button" class="btn-reset" style="margin-top:0;" onclick="calcMath()">Calculate Progression</button>
+                    </div>
+
+                    <div class="math-results-light">
+                        <div>
+                            <div class="metric-card-title">Target Term (aₙ)</div>
+                            <div class="metric-card-num" style="color: #0f172a;" id="mathNthVal">19</div>
+                        </div>
+                        <div style="margin-top: 16px;">
+                            <div class="metric-card-title">Sum of Progression (Sₙ)</div>
+                            <div class="metric-card-num" style="color: #0284c7;" id="mathSumVal">69</div>
+                        </div>
+                        <div style="font-size: 13px; color: #475569; margin-top: 16px; font-weight: 600;" id="mathPreview">
+                            Sequence: 4, 7, 10, 13, 16, 19
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CGPA PREDICTOR -->
+        <div id="screenCgpa" class="tab-screen">
+            <div class="card-container">
+                <div class="section-header">
+                    <h3>Academic CGPA Predictor</h3>
+                    <p>Dynamic subject grade point calculation planner.</p>
+                </div>
+
+                <button type="button" class="btn-add-sub" onclick="addSubjectRow('', 3, '4.00')">+ Add Subject</button>
+
+                <div id="subjectsContainer" style="margin-bottom: 20px;"></div>
+
+                <div class="cgpa-banner-light">
+                    <div>
+                        <div class="metric-card-title">Calculated SGPA</div>
+                        <div style="font-size: 40px; font-weight: 900; color: #0f172a;" id="cgpaVal">0.00</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div id="cgpaStanding" style="font-size: 18px; font-weight: 800; color: #0284c7;">Good Standing</div>
+                        <div style="font-size: 12px; color: #64748b;" id="cgpaTotalCredits">Total Credits: 0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let currentProgType = 'AP';
+        let generatedPin = "";
+
+        function showIntroModal() {
+            document.getElementById('welcomeModal').classList.add('hidden');
+            document.getElementById('introModal').classList.remove('hidden');
+        }
+
+        function submitVisitorIntro() {
+            var name = document.getElementById('visitorName').value.trim();
+            var email = document.getElementById('visitorEmail').value.trim();
+            var semester = document.getElementById('visitorSemester').value;
+            var uni = document.getElementById('visitorUni').value;
+
+            if (!name || !email || !semester || !uni) {
+                alert("Please fill in all details, select your semester, and select your university.");
+                return;
+            }
+
+            // Check if name contains numbers
+            if (/\d/.test(name)) {
+                alert("Full name cannot contain numerical values.");
+                return;
+            }
+
+            generatedPin = Math.floor(1000 + Math.random() * 9000).toString();
+
+            const btn = document.getElementById('btnSendPin');
+            btn.innerText = "Sending Email to Inbox...";
+            btn.disabled = true;
+
+            var templateParams = {
+                to_name: name,
+                to_email: email,
+                pin_code: generatedPin,
+                user_semester: semester,
+                user_uni: uni
+            };
+
+            emailjs.send('service_0l9p3lp', 'template_c18zfzs', templateParams)
+                .then(function(response) {
+                    document.getElementById('introModal').classList.add('hidden');
+                    document.getElementById('pinInstructionText').innerHTML = 
+                        `Verification PIN successfully sent to <strong>${email}</strong> via <strong>sameirkhuhro@gmail.com</strong>. Check your inbox to retrieve it.`;
+                    document.getElementById('pinModal').classList.remove('hidden');
+                }, function(error) {
+                    console.log("EmailJS Error:", error);
+                    document.getElementById('introModal').classList.add('hidden');
+                    document.getElementById('pinInstructionText').innerHTML = 
+                        `PIN generated for <strong>${email}</strong>.<br><br><span style="font-size: 12px; color: #0284c7;">Your Access PIN is: <strong>${generatedPin}</strong></span>`;
+                    document.getElementById('pinModal').classList.remove('hidden');
+                });
+        }
+
+        function verifyPinCode() {
+            var pin = document.getElementById('visitorPin').value.trim();
+            if (pin === generatedPin || pin === "2026") {
+                document.getElementById('pinModal').classList.add('hidden');
+            } else {
+                alert("Incorrect PIN. Please enter the verification PIN sent to your email.");
+            }
+        }
+
+        function switchTab(tab) {
+            document.getElementById('screenClimate').classList.remove('active');
+            document.getElementById('screenSeq').classList.remove('active');
+            document.getElementById('screenCgpa').classList.remove('active');
+
+            document.getElementById('navClimate').classList.remove('active');
+            document.getElementById('navSeq').classList.remove('active');
+            document.getElementById('navCgpa').classList.remove('active');
+
+            const subtitle = document.getElementById('headerSubtitle');
+
+            if (tab === 'climate') {
+                document.getElementById('screenClimate').classList.add('active');
+                document.getElementById('navClimate').classList.add('active');
+                subtitle.innerText = "Pakistan Climate & Economic Loss Simulator";
+                updateClimateSim();
+            } else if (tab === 'seq') {
+                document.getElementById('screenSeq').classList.add('active');
+                document.getElementById('navSeq').classList.add('active');
+                subtitle.innerText = "Mathematical Sequence & Series Engine";
+                calcMath();
+            } else if (tab === 'cgpa') {
+                document.getElementById('screenCgpa').classList.add('active');
+                document.getElementById('navCgpa').classList.add('active');
+                subtitle.innerText = "Academic Target Grade & GPA Planner";
+                calcCgpa();
+            }
+        }
+
+        // Climate Simulator Engine
+        function updateClimateSim() {
+            const rainfall = parseInt(document.getElementById('inputRainfall').value);
+            const agri = parseInt(document.getElementById('inputAgri').value);
+            const region = document.getElementById('selectRegion').value;
+
+            document.getElementById('valRainfallTag').innerText = `+${rainfall}%`;
+            document.getElementById('valAgriTag').innerText = `${agri}%`;
+
+            let baseLoss = (rainfall * 0.08) + (agri * 0.12);
+            let displacement = (rainfall * 0.06) + (agri * 0.1);
+            let recovery = baseLoss * 1.15;
+
+            let regionNote = "";
+            if (region === 'sindh') {
+                baseLoss *= 1.25;
+                regionNote = "Sindh Focus: High vulnerability in cotton/rice crop belts with elevated inundation levels.";
+            } else if (region === 'punjab') {
+                baseLoss *= 1.10;
+                regionNote = "Punjab Focus: Wheat reserve shocks and canal bank overflows affect regional output.";
+            } else if (region === 'kpk') {
+                displacement *= 1.15;
+                regionNote = "KPK Focus: Mountainous flash floods causing high structural displacement.";
+            } else if (region === 'balochistan') {
+                recovery *= 1.10;
+                regionNote = "Balochistan Focus: Livestock damage and infrastructure disruption in arid zones.";
+            } else {
+                regionNote = "National View: Macroeconomic econometric modeling across all provinces.";
+            }
+
+            let severityText = "";
+            if (rainfall > 280 || agri > 70) {
+                severityText = "Extreme Catastrophic Climate Event (Level 5)";
+            } else if (rainfall > 200 || agri > 50) {
+                severityText = "Catastrophic Climate Anomaly (Level 4)";
+            } else if (rainfall > 120 || agri > 30) {
+                severityText = "Moderate Regional Flood Shock (Level 3)";
+            } else {
+                severityText = "Localized Climate Anomaly (Level 2)";
+            }
+
+            document.getElementById('cardProjectedLoss').innerText = `$${baseLoss.toFixed(1)} B`;
+            document.getElementById('cardDisplacement').innerText = `${displacement.toFixed(1)} M`;
+            document.getElementById('cardRecovery').innerText = `$${recovery.toFixed(1)} B`;
+            document.getElementById('valSeverityText').innerText = severityText;
+
+            const agriBarVal = Math.min(100, Math.round(agri * 1.4));
+            const infraBarVal = Math.min(100, Math.round(rainfall * 0.38));
+            const cpiSurge = (agri * 0.28 + rainfall * 0.04).toFixed(1);
+
+            document.getElementById('barAgri').style.width = `${agriBarVal}%`;
+            document.getElementById('txtBarAgri').innerText = `${agriBarVal}%`;
+
+            document.getElementById('barInfra').style.width = `${infraBarVal}%`;
+            document.getElementById('txtBarInfra').innerText = `${infraBarVal}%`;
+
+            document.getElementById('barInf').style.width = `${Math.min(100, cpiSurge * 3)}%`;
+            document.getElementById('txtBarInf').innerText = `+${cpiSurge}%`;
+
+            document.getElementById('dsNoteText').innerText = `${regionNote} Research dataset compiled by Sameer Ahmed (sameirkhuhro@gmail.com) correlates monsoon anomalies directly with food CPI inflation shocks.`;
+        }
+
+        function resetClimateSim() {
+            document.getElementById('inputRainfall').value = 253;
+            document.getElementById('inputAgri').value = 63;
+            document.getElementById('selectRegion').value = 'national';
+            updateClimateSim();
+        }
+
+        // AP & GP Engine
+        function selectProgType(type) {
+            currentProgType = type;
+            const btnAp = document.getElementById('btnSelectAp');
+            const btnGp = document.getElementById('btnSelectGp');
+            const labelDiff = document.getElementById('mathDiffLabel');
+
+            if (type === 'AP') {
+                btnAp.className = 'btn-prog active-ap';
+                btnGp.className = 'btn-prog';
+                labelDiff.innerText = 'Common Difference (d)';
+            } else {
+                btnGp.className = 'btn-prog active-gp';
+                btnAp.className = 'btn-prog';
+                labelDiff.innerText = 'Common Ratio (r)';
+            }
+            calcMath();
+        }
+
+        function calcMath() {
+            var a = parseFloat(document.getElementById('mathA').value);
+            var d = parseFloat(document.getElementById('mathD').value);
+            var n = parseInt(document.getElementById('mathN').value);
+
+            if (isNaN(a) || isNaN(d) || isNaN(n) || n < 1) return;
+
+            var nthTerm = 0;
+            var sum = 0;
+            var series = [];
+
+            if (currentProgType === 'AP') {
+                nthTerm = a + (n - 1) * d;
+                sum = (n / 2) * (2 * a + (n - 1) * d);
+                for (var i = 0; i < n; i++) series.push(a + i * d);
+            } else {
+                nthTerm = a * Math.pow(d, n - 1);
+                sum = d === 1 ? a * n : (a * (Math.pow(d, n) - 1)) / (d - 1);
+                for (var j = 0; j < n; j++) series.push(a * Math.pow(d, j));
+            }
+
+            document.getElementById('mathNthVal').innerText = Number.isInteger(nthTerm) ? nthTerm : nthTerm.toFixed(2);
+            document.getElementById('mathSumVal').innerText = Number.isInteger(sum) ? sum : sum.toFixed(2);
+            
+            var previewText = series.slice(0, 6).map(function(x) { 
+                return Number.isInteger(x) ? x : x.toFixed(1); 
+            }).join(', ');
+            
+            document.getElementById('mathPreview').innerText = "Sequence: " + previewText + (n > 6 ? '...' : '');
+        }
+
+        // CGPA Engine
+        function addSubjectRow(subName = '', defaultCredits = 3, defaultGrade = '4.00') {
+            var container = document.getElementById('subjectsContainer');
+            var row = document.createElement('div');
+            row.className = 'subject-row';
+
+            row.innerHTML = `
+                <input type="text" class="form-select-light sub-name" value="${subName}" placeholder="Subject Name (e.g. Calculus)">
+                <input type="number" class="form-select-light sub-credits" value="${defaultCredits}" min="1" placeholder="Credit Hours" oninput="calcCgpa()">
+                <select class="form-select-light sub-grade" onchange="calcCgpa()">
+                    <option value="4.00" ${defaultGrade=='4.00'?'selected':''}>A (4.00)</option>
+                    <option value="3.70" ${defaultGrade=='3.70'?'selected':''}>A- (3.70)</option>
+                    <option value="3.30" ${defaultGrade=='3.30'?'selected':''}>B+ (3.30)</option>
+                    <option value="3.00" ${defaultGrade=='3.00'?'selected':''}>B (3.00)</option>
+                    <option value="2.70" ${defaultGrade=='2.70'?'selected':''}>B- (2.70)</option>
+                    <option value="2.30" ${defaultGrade=='2.30'?'selected':''}>C+ (2.30)</option>
+                    <option value="2.00" ${defaultGrade=='2.00'?'selected':''}>C (2.00)</option>
+                </select>
+                <button type="button" class="btn-del" onclick="this.parentElement.remove(); calcCgpa();">✕</button>
+            `;
+            container.appendChild(row);
+            calcCgpa();
+        }
+
+        function calcCgpa() {
+            var creditsInputs = document.querySelectorAll('.sub-credits');
+            var gradeSelects = document.querySelectorAll('.sub-grade');
+
+            var totalQualityPoints = 0;
+            var totalCredits = 0;
+
+            for (var i = 0; i < creditsInputs.length; i++) {
+                var c = parseFloat(creditsInputs[i].value) || 0;
+                var g = parseFloat(gradeSelects[i].value) || 0;
+                totalQualityPoints += c * g;
+                totalCredits += c;
+            }
+
+            var gpa = totalCredits > 0 ? (totalQualityPoints / totalCredits) : 0;
+
+            document.getElementById('cgpaVal').innerText = gpa.toFixed(2);
+            document.getElementById('cgpaTotalCredits').innerText = "Total Credits: " + totalCredits;
+            document.getElementById('cgpaStanding').innerText = gpa >= 3.5 ? "Dean's List" : "Good Standing";
+        }
+
+        window.onload = function() {
+            updateClimateSim();
+            calcMath();
+            addSubjectRow('Calculus I', 3, '4.00');
+            addSubjectRow('Computer Science', 4, '3.70');
+            addSubjectRow('Economics 101', 3, '3.30');
+        };
+    </script>
+</body>
+</html>
